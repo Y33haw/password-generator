@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+        }
+        #password {
+            font-size: 1.5em;
+            margin-top: 20px;
+            color: #2c3e50;
+            font-weight: bold;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1em;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Password Generator</h1>
+    <p>Click the button to get a unique password!</p>
+    <button onclick="generatePassword()">Generate Password</button>
+    <div id="password"></div>
+
+    <script>
+        const usedPasswords = new Set();
+
+        function generatePassword() {
+            const charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+";
+            let password;
+            do {
+                password = Array.from({ length: 12 }, () => 
+                    charset.charAt(Math.floor(Math.random() * charset.length))
+                ).join('');
+            } while (usedPasswords.has(password) && usedPasswords.size < 1_000_000);
+            
+            usedPasswords.add(password);
+
+            if (usedPasswords.size >= 1_000_000) {
+                document.getElementById('password').innerText = "All possible passwords have been generated!";
+                return;
+            }
+            document.getElementById('password').innerText = password;
+        }
+    </script>
+</body>
+</html>
